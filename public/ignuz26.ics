@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//IGNUZ26//KPRIET BME//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:ignuz26@kpriet.ac.in
+DTSTAMP:20260922T195820Z
+DTSTART;VALUE=DATE:20261009
+DTEND;VALUE=DATE:20261011
+SUMMARY:IGNUZ'26 — National-level technical symposium
+LOCATION:KPR Institute of Engineering and Technology, Arasur, Coimbatore
+DESCRIPTION:Dept. of Biomedical Engineering, KPRIET. Six events, two days. Register: https://forms.gle/512N3yDsMZzTYqtH9
+URL:https://forms.gle/512N3yDsMZzTYqtH9
+END:VEVENT
+END:VCALENDAR
