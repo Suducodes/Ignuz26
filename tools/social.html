@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Social kit (dev tool)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; background: #888; font: 12px 'IBM Plex Mono', monospace; }
+    #heart { position: absolute; left: -9999px; top: 0; width: 800px; height: 800px; }
+    #heart canvas { width: 100%; height: 100%; }
+    #out { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; }
+    #out canvas { width: 216px; height: auto; background: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Dev-only: renders the Instagram kit from the site's own graphics and
+       writes PNGs into public/social/ via the dev server's /__save endpoint. -->
+  <div id="heart"><canvas></canvas></div>
+  <pre id="log"></pre>
+  <div id="out"></div>
+  <script type="module" src="./social.js"></script>
+</body>
+</html>

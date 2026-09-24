@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Reel render (dev tool)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; background: #222; color: #ccc; font: 12px 'IBM Plex Mono', monospace; }
+    #heart { position: absolute; left: -9999px; top: 0; width: 800px; height: 800px; }
+    #heart canvas { width: 100%; height: 100%; }
+    #frame { width: 270px; height: 480px; display: block; margin: 12px; }
+  </style>
+</head>
+<body>
+  <!-- Dev-only: renders the Instagram reel frame by frame from the site's own
+       graphics and writes JPEG frames to public/reel/ via the dev /__save endpoint.
+       ?preview renders without saving. Encode with scripts/encode-reel.py. -->
+  <div id="heart"><canvas></canvas></div>
+  <canvas id="frame" width="1080" height="1920"></canvas>
+  <pre id="log"></pre>
+  <script type="module" src="./reel.js"></script>
+</body>
+</html>

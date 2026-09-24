@@ -1,2 +1,7 @@
 node_modules/
 dist/
+# render scratch (tools/*.html write here)
+public/reel/
+public/social/
+# generated social kit — large binaries, kept out of the repo
+social-kit/

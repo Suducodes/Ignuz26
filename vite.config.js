@@ -22,7 +22,7 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use('/__save', (req, res) => {
           const name = new URL(req.url, 'http://x').searchParams.get('name') ?? '';
-          if (!/^[\w./-]+\.(png|webp|jpg)$/.test(name) || name.includes('..')) {
+          if (!/^[\w./-]+\.(png|webp|jpg|json)$/.test(name) || name.includes('..')) {
             res.statusCode = 400; return res.end('bad name');
           }
           const chunks = [];
@@ -37,6 +37,10 @@ export default defineConfig({
       },
     },
   ],
-  build: { target: 'es2020', assetsInlineLimit: 0 },
+  build: {
+    target: 'es2020',
+    assetsInlineLimit: 0,
+    rollupOptions: { input: { main: resolve('index.html'), pass: resolve('pass.html') } },
+  },
   server: { port: 5326 },
 });

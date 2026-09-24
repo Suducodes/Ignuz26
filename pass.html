@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>I'm attending IGNUZ'26 — make your card</title>
+  <meta name="description" content="Going to IGNUZ'26? Make an “I'm attending” card with your name and share it on your story. 09 & 10 October 2026, KPRIET, Coimbatore." />
+  <meta name="theme-color" content="#1f45e0" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <script>document.documentElement.classList.add('js')</script>
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="I'm attending IGNUZ'26 — make your card" />
+  <meta property="og:description" content="Put your name on an IGNUZ'26 wristband and share it. 09 & 10 Oct 2026 · KPRIET, Coimbatore." />
+  <meta property="og:image" content="__SITE_URL__og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="nav theme-blue is-static">
+    <a class="nav__mark" href="./" aria-label="IGNUZ'26 — back to the main site">
+      <span class="nav__dot" aria-hidden="true"></span>IGNUZ<span class="nav__yr">'26</span>
+    </a>
+    <a class="nav__back mono" href="./">← Main site</a>
+    <a class="nav__cta" href="https://forms.gle/512N3yDsMZzTYqtH9" target="_blank" rel="noopener">Register<span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main class="pass ecg-paper theme-blue">
+    <div class="pass__intro">
+      <p class="mono pass__kicker"><span class="hl">Nº IGN—26</span> Attendee card</p>
+      <h1 class="pass__h">Going to IGNUZ'26? <span class="hl">Say it.</span></h1>
+      <p class="pass__lede">Put your name on the wristband, pick the event you're most excited about, and share it on your story. The card is drawn in your browser. Nothing you type is sent anywhere.</p>
+    </div>
+
+    <form class="pass__form" id="pass-form" autocomplete="off">
+      <label class="field">
+        <span class="mono">Your name</span>
+        <input name="name" id="f-name" maxlength="26" placeholder="e.g. Sudarshan V" required />
+      </label>
+      <label class="field">
+        <span class="mono">College <em>optional</em></span>
+        <input name="college" id="f-college" maxlength="40" placeholder="e.g. KPRIET, Coimbatore" />
+      </label>
+
+      <fieldset class="field">
+        <legend class="mono">Most excited for</legend>
+        <div class="picks" id="picks">
+          <label class="chip"><input type="radio" name="pick" value="all" checked /><span>All six</span></label>
+          <label class="chip"><input type="radio" name="pick" value="0" /><span>Ink 2 Impact</span></label>
+          <label class="chip"><input type="radio" name="pick" value="1" /><span>Beyond the Blueprint</span></label>
+          <label class="chip"><input type="radio" name="pick" value="2" /><span>VisionX</span></label>
+          <label class="chip"><input type="radio" name="pick" value="3" /><span>Tech Heist 3.0</span></label>
+          <label class="chip"><input type="radio" name="pick" value="4" /><span>BioSync</span></label>
+          <label class="chip"><input type="radio" name="pick" value="5" /><span>Freeze the Frame</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="mono">Format</legend>
+        <div class="picks">
+          <label class="chip"><input type="radio" name="format" value="story" checked /><span>Story · 9:16</span></label>
+          <label class="chip"><input type="radio" name="format" value="post" /><span>Post · 4:5</span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <figure class="pass__preview">
+      <canvas id="card" width="1080" height="1920" role="img" aria-label="Preview of your I'm attending card"></canvas>
+      <figcaption class="pass__actions">
+        <button class="btn btn--ink" type="button" id="dl">Download card <span aria-hidden="true">↓</span></button>
+        <button class="btn btn--line" type="button" id="share" hidden>Share <span aria-hidden="true">↗</span></button>
+        <p class="mono pass__id">Card ref <b id="card-id">IGN26-····</b></p>
+        <p class="pass__note">This is a share card, not an entry pass. If you haven't yet, <a href="https://forms.gle/512N3yDsMZzTYqtH9" target="_blank" rel="noopener">register here</a> to hold your seat.</p>
+      </figcaption>
+    </figure>
+  </main>
+
+  <script type="module" src="/src/pass.js"></script>
+</body>
+</html>
