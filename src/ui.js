@@ -131,7 +131,6 @@ export function initUI() {
   }).observe(document.body);
 }
 
-// el is an inline-block run of text; its parent carries the font-size
 // ECG ribbon under the nav; the live copy is clipped to scroll progress
 function buildTrace(nav) {
   const w = nav.clientWidth;
@@ -163,6 +162,7 @@ function countUp(el) {
   requestAnimationFrame(step);
 }
 
+// el is an inline-block run of text; its parent carries the font-size
 function fitText(el) {
   const host = el.parentElement;
   const box = host.parentElement.getBoundingClientRect();
