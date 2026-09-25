@@ -1,7 +1,7 @@
 import './styles.css';
 import './pass.css';
 import { loadImg } from './draw.js';
-import { drawCard, SITE } from './card.js';
+import { drawCard, SITE, DAYS } from './card.js';
 
 // "I'm attending" card maker: form → live canvas preview → download / share.
 
@@ -22,6 +22,7 @@ function state() {
     college: (f.get('college') || '').toString().slice(0, 40),
     pick: pick === 'all' ? 'all' : Number(pick),
     format: f.get('format') || 'story',
+    days: f.get('days') || 'both',
   };
 }
 
@@ -54,7 +55,7 @@ async function share() {
   render();
   const file = new File([await toBlob()], fileName(), { type: 'image/png' });
   try {
-    await navigator.share({ files: [file], title: "I'm attending IGNUZ'26", text: `I'm attending IGNUZ'26 — 09 & 10 Oct at KPRIET. Register: https://${SITE}/` });
+    await navigator.share({ files: [file], title: "I'm attending IGNUZ'26", text: `I'm attending IGNUZ'26 (${DAYS[state().days].date.replace(' 2026', '')}) at KPRIET. One-day passes from ₹200: https://${SITE}/` });
   } catch { /* dismissed */ }
 }
 if (navigator.canShare?.({ files: [new File([''], 'x.png', { type: 'image/png' })] })) {
@@ -62,6 +63,18 @@ if (navigator.canShare?.({ files: [new File([''], 'x.png', { type: 'image/png' }
   shareBtn.addEventListener('click', share);
 }
 
+// a one-day attendee can only be excited about that day's events
+function syncPicks() {
+  const allowed = DAYS[state().days].events;
+  for (const input of form.querySelectorAll('input[name=pick]')) {
+    if (input.value === 'all') continue;
+    const ok = allowed.includes(Number(input.value));
+    input.disabled = !ok;
+    input.closest('label').classList.toggle('is-off', !ok);
+    if (!ok && input.checked) form.querySelector('input[name=pick][value=all]').checked = true;
+  }
+}
+form.addEventListener('change', (e) => { if (e.target.name === 'days') syncPicks(); });
 form.addEventListener('input', schedule);
 form.addEventListener('submit', (e) => e.preventDefault());
 

@@ -227,7 +227,7 @@ export function barcode(ctx, text, x, y, w, h, color) {
   for (const [bx, bw] of bars) ctx.fillRect(x + (bx / u) * w, y, (bw / u) * w, h);
 }
 
-export function band(ctx, x, y, w, h, { blue, type, price, code, bandName }) {
+export function band(ctx, x, y, w, h, { blue, type, price, code, pass = 'Both days · 09–10.10.26', flag = '' }) {
   const bg = blue ? '#1f45e0' : '#fbfcff';
   const fg = blue ? '#f4f7ff' : '#0a1633';
   const r = h / 2;
@@ -255,7 +255,7 @@ export function band(ctx, x, y, w, h, { blue, type, price, code, bandName }) {
   const sub = blue ? 'rgba(244,247,255,0.8)' : '#34425e';
   const kW = T(ctx, "IGNUZ'26 · Admit one", ix, y + h * 0.3, mono(fg, 19, { color: sub }));
   const tW = T(ctx, type, ix, y + h * 0.63, head(fg, h * 0.29));
-  const fW = T(ctx, 'Both days · 09–10.10.26', ix, y + h * 0.84, mono(fg, 17, { color: sub }));
+  const fW = T(ctx, pass, ix, y + h * 0.84, mono(fg, 17, { color: sub }));
   const idRight = ix + Math.max(kW, tW, fW);
   // price
   const pw = T(ctx, price, x + w - 40, y + h * 0.7, { size: h * 0.5, weight: 900, stretch: 'semi-expanded', track: -h * 0.02, color: fg, align: 'right' });
@@ -265,6 +265,18 @@ export function band(ctx, x, y, w, h, { blue, type, price, code, bandName }) {
   if (bx >= idRight + 16) {
     if (blue) { ctx.fillStyle = '#fbfcff'; ctx.fillRect(bx - 10, y + h * 0.2 - 8, bw + 20, h * 0.6 + 16); }
     barcode(ctx, code, bx, y + h * 0.2, bw, h * 0.6, '#0a1633');
+  }
+  if (flag) {
+    // a small rubber stamp over the price
+    ctx.save();
+    ctx.translate(x + w - 40 - pw * 0.55, y + 20);
+    ctx.rotate(-0.05);
+    font(ctx, mono(fg, 17, { weight: 600 }));
+    const fw = ctx.measureText(flag.toUpperCase()).width + 20;
+    ctx.fillStyle = blue ? '#f4f7ff' : '#1f45e0';
+    ctx.fillRect(-fw / 2, -14, fw, 28);
+    T(ctx, flag, 0, 6, mono(blue ? '#1f45e0' : '#f4f7ff', 17, { align: 'center', weight: 600 }));
+    ctx.restore();
   }
 }
 

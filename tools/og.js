@@ -113,7 +113,7 @@ async function main() {
   // register tab
   ctx.fillStyle = INK;
   ctx.fillRect(W - G - 330, 586, 330, 44);
-  text(ctx, 'REGISTER — FROM ₹400 ↗', W - G - 165, 614, { font: '600 16px "IBM Plex Mono"', align: 'center', color: PAPER, spacing: '1px' });
+  text(ctx, 'ONE-DAY PASS FROM ₹200 ↗', W - G - 165, 614, { font: '600 16px "IBM Plex Mono"', align: 'center', color: PAPER, spacing: '1px' });
   text(ctx, 'NATIONAL-LEVEL TECHNICAL SYMPOSIUM · ₹10,000 PRIZE POOL', G, 614, { font: mono, spacing: '1px', color: 'rgba(244,247,255,0.85)' });
 
   log(await save(c, 'og.png') /* converted to og.jpg afterwards */);

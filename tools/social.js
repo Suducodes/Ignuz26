@@ -44,6 +44,30 @@ async function renderHeart() {
   HEART.getContext('2d').drawImage(src, 0, 0);
 }
 
+const PASSES = [
+  { blue: false, type: 'Without lunch', price: '200', code: 'IGN26-1W', pass: 'One day · 09 or 10.10.26' },
+  { blue: true, type: 'With lunch', price: '300', code: 'IGN26-1B', pass: 'One day · 09 or 10.10.26' },
+  { blue: false, type: 'Without lunch', price: '400', code: 'IGN26-2W', pass: 'Both days · 09–10.10.26' },
+  { blue: true, type: 'With lunch', price: '600', code: 'IGN26-2B', pass: 'Both days · 09–10.10.26' },
+];
+
+// four wristbands in two labelled pairs; returns the y below the last one
+function passStack(ctx, st, top, bh, gap) {
+  let y = top;
+  PASSES.forEach((p, i) => {
+    if (i === 0 || i === 2) {
+      const lbl = i === 0 ? 'One-day pass · Day 01 or Day 02' : 'Both days · Fri 09 & Sat 10';
+      let x = G;
+      if (i === 0) x += tag(ctx, st, 'New', G, y + 22, 17, true) + 14;
+      T(ctx, lbl, x, y + 22, mono(st.ink2, 19));
+      y += 44;
+    }
+    band(ctx, G, y, W - 2 * G, bh, p);
+    y += bh + gap;
+  });
+  return y;
+}
+
 /* ───────────────────────────── feed posts (1080 × 1350) */
 
 function postAnnounce() {
@@ -62,7 +86,7 @@ function postAnnounce() {
   T(ctx, 'II  25 mm/s · 10 mm/mV', 104, 1132, mono(st.ink3, 16));
   ctx.fillStyle = st.ink;
   ctx.fillRect(W - G - 430, 1262, 430, 58);
-  T(ctx, 'Register — from ₹400  ↗', W - G - 215, 1300, mono(st.bg, 22, { align: 'center', weight: 600 }));
+  T(ctx, 'One-day pass from ₹200  ↗', W - G - 215, 1300, mono(st.bg, 22, { align: 'center', weight: 600 }));
   T(ctx, 'KPRIET Campus · Coimbatore', G, 1300, mono(st.ink, 21));
   grain(ctx, W, H);
   return c;
@@ -146,23 +170,14 @@ function postEvent(ev, i) {
 function postRegister() {
   const H = 1350, c = make(W, H), ctx = c.getContext('2d'), st = STOCK.paper;
   ground(ctx, st, W, H, false);
-  sectionHead(ctx, st, 64, '§04', 'Admission', 'Both days');
-  T(ctx, 'One registration.', G, 238, head(st.ink, 106));
-  T(ctx, 'Both days.', G, 340, head(st.accent, 106));
-  band(ctx, G, 410, W - 2 * G, 200, { blue: false, type: 'Without lunch', price: '400', code: 'IGN26-W', bandName: 'White' });
-  band(ctx, G, 648, W - 2 * G, 200, { blue: true, type: 'With lunch', price: '600', code: 'IGN26-B', bandName: 'Blue' });
-  ctx.fillStyle = st.ink; ctx.fillRect(G, 912, W - 2 * G, 2);
-  T(ctx, 'Prize pool', G, 958, mono(st.ink3, 20));
-  T(ctx, '₹10,000', G - 4, 1068, { size: 118, weight: 900, track: -4, color: st.accent });
-  const notes = ['Covers Fri 09 & Sat 10 Oct', 'Accommodation not provided', 'Seats are limited'];
-  notes.forEach((n, k) => {
-    T(ctx, `0${k + 1}`, 620, 968 + k * 44, mono(st.accent, 19));
-    T(ctx, n, 668, 968 + k * 44, { size: 27, weight: 500, color: st.ink });
-  });
-  ctx.fillStyle = st.ink; ctx.fillRect(G, 1114, W - 2 * G, 124);
-  T(ctx, 'Register now', G + 36, 1194, head(st.bg, 62));
-  T(ctx, 'Link in bio ↗', W - G - 36, 1188, mono('#8fe6ff', 24, { align: 'right', weight: 600 }));
-  footer(ctx, st, H + 12, "IGNUZ'26 · KPRIET Campus, Coimbatore", '09—10.10.2026');
+  sectionHead(ctx, st, 64, '§04', 'Admission', 'One day or both');
+  T(ctx, 'Come for a day.', G, 214, head(st.ink, 96));
+  T(ctx, 'Or stay for both.', G, 306, head(st.accent, 96));
+  const y = passStack(ctx, st, 340, 150, 14);
+  ctx.fillStyle = st.ink; ctx.fillRect(G, y + 6, W - 2 * G, 110);
+  T(ctx, 'Register now', G + 36, y + 80, head(st.bg, 58));
+  T(ctx, 'Link in bio ↗', W - G - 36, y + 74, mono('#8fe6ff', 24, { align: 'right', weight: 600 }));
+  footer(ctx, st, H + 12, 'Prize pool ₹10,000 · Accommodation not provided', '09—10.10.2026');
   grain(ctx, W, H, 0.3);
   return c;
 }
@@ -184,7 +199,7 @@ function storyHero() {
   T(ctx, 'October 2026', W - G, 1586, head(st.ink, 48, { align: 'right' }));
   T(ctx, 'KPRIET · Coimbatore', W - G, 1636, mono(st.ink2, 22, { align: 'right' }));
   strip(ctx, st, 0, W, 1790, 70, { dot: W - 170 });
-  T(ctx, 'Tap the link to register · from ₹400', W / 2, 1712, mono(st.accent, 23, { align: 'center', weight: 600 }));
+  T(ctx, 'New one-day pass from ₹200 · tap the link', W / 2, 1712, mono(st.accent, 23, { align: 'center', weight: 600 }));
   grain(ctx, W, H);
   return c;
 }
@@ -215,19 +230,14 @@ function storyRegister() {
   const H = 1920, c = make(W, H), ctx = c.getContext('2d'), st = STOCK.paper;
   ground(ctx, st, W, H, false);
   sectionHead(ctx, st, 240, '§04', 'Admission', "IGNUZ'26");
-  T(ctx, 'One registration.', G, 430, head(st.ink, 116));
-  T(ctx, 'Both days.', G, 542, head(st.accent, 116));
-  band(ctx, G, 636, W - 2 * G, 200, { blue: false, type: 'Without lunch', price: '400', code: 'IGN26-W', bandName: 'White' });
-  band(ctx, G, 890, W - 2 * G, 200, { blue: true, type: 'With lunch', price: '600', code: 'IGN26-B', bandName: 'Blue' });
-  ctx.fillStyle = st.ink; ctx.fillRect(G, 1180, W - 2 * G, 2);
-  T(ctx, 'Prize pool', G, 1228, mono(st.ink3, 21));
-  T(ctx, '₹10,000', G - 4, 1356, { size: 140, weight: 900, track: -5, color: st.accent });
-  T(ctx, 'Covers Fri 09 & Sat 10 October 2026', G, 1418, { size: 30, weight: 500, color: st.ink });
-  T(ctx, 'Accommodation not provided · Seats limited', G, 1460, { size: 30, weight: 500, color: st.ink2 });
-  ctx.fillStyle = st.ink; ctx.fillRect(G, 1516, W - 2 * G, 132);
-  T(ctx, 'Tap the link to register', G + 36, 1600, head(st.bg, 60));
-  T(ctx, '↗', W - G - 40, 1604, { size: 64, weight: 700, color: '#8fe6ff', align: 'right' });
-  strip(ctx, st, 0, W, 1800, 64, { dot: W - 170 });
+  T(ctx, 'Come for a day.', G, 410, head(st.ink, 108));
+  T(ctx, 'Or stay for both.', G, 514, head(st.accent, 108));
+  const y = passStack(ctx, st, 560, 170, 18);
+  T(ctx, 'Prize pool ₹10,000 · Accommodation not provided · Seats limited', G, y + 30, mono(st.ink2, 19));
+  ctx.fillStyle = st.ink; ctx.fillRect(G, y + 64, W - 2 * G, 124);
+  T(ctx, 'Tap the link to register', G + 36, y + 146, head(st.bg, 58));
+  T(ctx, '↗', W - G - 40, y + 150, { size: 64, weight: 700, color: '#8fe6ff', align: 'right' });
+  strip(ctx, st, 0, W, 1810, 56, { dot: W - 170 });
   grain(ctx, W, H, 0.3);
   return c;
 }
@@ -250,7 +260,7 @@ function storyPrize() {
     T(ctx, ev.name, x + 52, y + 2, head(st.ink, 44));
   });
   ctx.fillStyle = st.ink; ctx.fillRect(G, 1500, W - 2 * G, 132);
-  T(ctx, 'Register — from ₹400', G + 36, 1586, head(st.bg, 58));
+  T(ctx, 'Register — from ₹200', G + 36, 1586, head(st.bg, 58));
   T(ctx, '↗', W - G - 40, 1590, { size: 64, weight: 700, color: st.bg, align: 'right' });
   grain(ctx, W, H);
   return c;
@@ -300,8 +310,78 @@ function storyCountdown(days) {
   T(ctx, 'Limited — register now', x1, my + 978, mono(amber, 22, { align: 'right', weight: 600 }));
 
   T(ctx, 'Fri 09 & Sat 10 October 2026 · KPRIET, Coimbatore', W / 2, 1640, mono(st.ink2, 22, { align: 'center' }));
-  T(ctx, 'Tap the link to register · from ₹400', W / 2, 1700, mono(st.accent, 24, { align: 'center', weight: 600 }));
+  T(ctx, 'One-day pass from ₹200 · tap the link', W / 2, 1700, mono(st.accent, 24, { align: 'center', weight: 600 }));
   grain(ctx, W, H, 0.3);
+  return c;
+}
+
+// which events fall on which day — Freeze the Frame runs on both
+const DAY_EVENTS = [[0, 1, 2, 5], [3, 4, 5]];
+
+function dayColumns(ctx, st, x0, top, colW, rowH, thumbW) {
+  [['Day 01', 'Fri 09 Oct'], ['Day 02', 'Sat 10 Oct']].forEach(([d, date], k) => {
+    const x = x0 + k * (colW + 40);
+    T(ctx, d, x, top, head(st.ink, 46));
+    T(ctx, date, x + colW, top, mono(st.accent, 20, { align: 'right', weight: 600 }));
+    ctx.fillStyle = st.ink; ctx.fillRect(x, top + 16, colW, 2);
+    DAY_EVENTS[k].forEach((ei, r) => {
+      const ev = EVENTS[ei];
+      const y = top + 34 + r * rowH;
+      plate(ctx, ev, x, y, thumbW, thumbW * 0.75, ev.plateStock || 'navy', false);
+      const tx = x + thumbW + 18, tw = colW - thumbW - 18;
+      font(ctx, head(st.ink, 34));
+      const size = Math.min(34, (34 * tw) / ctx.measureText(ev.name).width);
+      T(ctx, ev.name, tx, y + thumbW * 0.36, head(st.ink, size));
+      T(ctx, ev.kind, tx, y + thumbW * 0.62, mono(st.ink3, 15));
+    });
+  });
+}
+
+function bigPrice(ctx, st, x, base, width) {
+  font(ctx, { size: 100, weight: 900, stretch: 'expanded', track: -4 });
+  const size = (100 * width) / ctx.measureText('₹200').width;
+  T(ctx, '₹200', x, base, { size, weight: 900, stretch: 'expanded', track: -0.04 * size, color: st.ink });
+  return size;
+}
+
+function postOneDay() {
+  const H = 1350, c = make(W, H), ctx = c.getContext('2d'), st = STOCK.blue;
+  ground(ctx, st, W, H);
+  metaRow(ctx, st, 86, ['Nº IGN—26', 'New pass', '09—10.10.26']);
+  tag(ctx, st, 'New', G, 156, 22, true);
+  T(ctx, 'The one-day pass.', G, 262, head(st.ink, 88));
+  bigPrice(ctx, st, G - 6, 500, 580);
+  T(ctx, 'Without lunch', G, 552, mono(st.ink2, 21));
+  const rx = 720;
+  ctx.fillStyle = st.line; ctx.fillRect(rx - 34, 360, 2, 200);
+  T(ctx, '₹300', rx - 4, 500, { size: 104, weight: 900, stretch: 'semi-expanded', track: -3, color: st.accent });
+  T(ctx, 'With lunch', rx, 552, mono(st.ink2, 21));
+  strip(ctx, st, 0, W, 650, 50, { calib: false, beat: 270, off: 0.1, dot: W - 150 });
+  T(ctx, 'Pick your day:', G, 738, mono(st.ink, 22, { weight: 600 }));
+  dayColumns(ctx, st, G, 796, (W - 2 * G - 40) / 2, 94, 104);
+  ctx.fillStyle = st.ink; ctx.fillRect(G, 1206, W - 2 * G, 100);
+  T(ctx, 'Register — pick your day', G + 32, 1272, head(st.bg, 50));
+  T(ctx, 'Link in bio ↗', W - G - 32, 1266, mono(st.bg, 22, { align: 'right', weight: 600 }));
+  grain(ctx, W, H);
+  return c;
+}
+
+function storyOneDay() {
+  const H = 1920, c = make(W, H), ctx = c.getContext('2d'), st = STOCK.blue;
+  ground(ctx, st, W, H);
+  metaRow(ctx, st, 250, ['Nº IGN—26', 'New pass', '09—10.10.26']);
+  tag(ctx, st, 'New', G, 326, 24, true);
+  T(ctx, 'The one-day pass.', G, 450, head(st.ink, 104));
+  bigPrice(ctx, st, G - 6, 740, W - 2 * G + 12);
+  T(ctx, 'Without lunch', G, 800, mono(st.ink2, 24));
+  T(ctx, '₹300 with lunch', W - G, 800, mono(st.accent, 24, { align: 'right', weight: 600 }));
+  strip(ctx, st, 0, W, 900, 56, { calib: false, beat: 270, off: 0.1, dot: W - 170 });
+  T(ctx, 'Pick your day:', G, 990, mono(st.ink, 24, { weight: 600 }));
+  dayColumns(ctx, st, G, 1060, (W - 2 * G - 40) / 2, 104, 112);
+  ctx.fillStyle = st.ink; ctx.fillRect(G, 1520, W - 2 * G, 124);
+  T(ctx, 'Tap the link to register', G + 36, 1602, head(st.bg, 58));
+  T(ctx, '↗', W - G - 40, 1606, { size: 64, weight: 700, color: st.bg, align: 'right' });
+  grain(ctx, W, H);
   return c;
 }
 
@@ -313,6 +393,8 @@ async function main() {
   await renderHeart();
   log('heart ready');
 
+  await save(postOneDay(), 'post-00-oneday');
+  await save(storyOneDay(), 'story-00-oneday');
   await save(postAnnounce(), 'post-01-announce');
   await save(postCover(), 'carousel-00-lineup');
   for (let i = 0; i < EVENTS.length; i++) await save(postEvent(EVENTS[i], i), `carousel-0${i + 1}-${EVENTS[i].plate}`);

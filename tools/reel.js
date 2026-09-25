@@ -283,7 +283,7 @@ function sceneEnd(ctx) {
   const k2 = ease((lt - 0.5) / 0.5);
   ctx.globalAlpha = k2;
   ctx.fillStyle = st.ink; ctx.fillRect(G, 1290, W - 2 * G, 130);
-  T(ctx, 'Register — from ₹400', G + 40, 1378, head(st.bg, 68));
+  T(ctx, 'One-day pass from ₹200', G + 40, 1378, head(st.bg, 68));
   T(ctx, '↗', W - G - 40, 1382, { size: 70, weight: 700, color: st.bg, align: 'right' });
   T(ctx, 'Link in bio · suducodes.github.io/Ignuz26', W / 2, 1488, mono(st.accent, 26, { align: 'center', weight: 600, upper: false }));
   ctx.globalAlpha = 1;
